@@ -14,35 +14,41 @@ type TreeNodeState = FlatTreeNode & {
 type TreeState = Record<string, TreeNodeState>;
 
 const tree = new Tree();
-const root = tree.insert("My Storage", null, "dir");
-tree.insert("Document", root, "dir");
-tree.insert("Archive", root, "dir");
 
-function getModifiedTreeData() {
+function getExtendedTreeNodes() {
   const state: TreeState = {};
-  const treeData = tree.getFlat();
+  // get flattened tree nodes from tree object
+  const treeNodes = tree.getFlat();
 
-  for (let property in treeData) {
+  // extend tree nodes with some new properties
+  for (let property in treeNodes) {
     state[property] = {
-      ...treeData[property],
+      ...treeNodes[property],
       mode: "read",
-      isError: false
+      isError: false,
     };
   }
 
   return state;
 }
 
-const initialTree = getModifiedTreeData();
+function createInitialTreeNodes() {
+  const root = tree.insert("My Storage", null, "dir");
+  tree.insert("Document", root, "dir");
+  tree.insert("Archive", root, "dir");
+  return getExtendedTreeNodes();
+}
+
+const initialTreeNodes = createInitialTreeNodes();
 
 export default function App() {
-  const [treeNodes, setTreeNodes] = useState(initialTree);
+  const [treeNodes, setTreeNodes] = useState(initialTreeNodes);
   const [activeTreeNode, setActiveTreeNode] = useState("");
   const [filenameInput, setFilenameInput] = useState("");
   const refContextMenu = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    function handleClickOutside() {
       if (refContextMenu && refContextMenu.current) {
         refContextMenu.current.style.display = "none";
       }
@@ -61,7 +67,7 @@ export default function App() {
       newTreeNodes[property] = {
         ...treeData[property],
         mode: property === newTreeNode.id ? "write" : "read",
-        isError: false
+        isError: false,
       };
     }
 
@@ -79,7 +85,7 @@ export default function App() {
 
   function removeTreeNode() {
     tree.remove(activeTreeNode);
-    setTreeNodes(getModifiedTreeData());
+    setTreeNodes(getExtendedTreeNodes());
   }
 
   function updateTreeNodeModeToWrite() {
@@ -89,8 +95,8 @@ export default function App() {
       ...prevTreeNodes,
       [activeTreeNode]: {
         ...prevTreeNodes[activeTreeNode],
-        mode: "write"
-      }
+        mode: "write",
+      },
     }));
   }
 
@@ -102,14 +108,14 @@ export default function App() {
     e.preventDefault();
     try {
       tree.rename(activeTreeNode, filenameInput);
-      setTreeNodes(getModifiedTreeData());
+      setTreeNodes(getExtendedTreeNodes());
     } catch (err) {
       setTreeNodes((prevTreeNodes) => ({
         ...prevTreeNodes,
         [activeTreeNode]: {
           ...prevTreeNodes[activeTreeNode],
-          isError: true
-        }
+          isError: true,
+        },
       }));
     }
     setFilenameInput("");
@@ -134,8 +140,8 @@ export default function App() {
       ...prevTreeNodes,
       [treeNodeId]: {
         ...prevTreeNodes[treeNodeId],
-        isCollapse: !prevTreeNodes[treeNodeId].isCollapse
-      }
+        isCollapse: !prevTreeNodes[treeNodeId].isCollapse,
+      },
     }));
   }
 
@@ -175,7 +181,7 @@ export default function App() {
     );
   }
 
-  function renderNodeItem(treeNode: TreeNodeState) {
+  function renderTreeNode(treeNode: TreeNodeState) {
     return treeNode.mode === "write"
       ? renderTreeNodeAsWritable(treeNode)
       : renderTreeNodeAsReadonly(treeNode);
@@ -189,7 +195,7 @@ export default function App() {
           .map((childNode) =>
             childNode ? (
               <li key={childNode.id}>
-                {renderNodeItem(childNode)}
+                {renderTreeNode(childNode)}
                 {childNode.isCollapse
                   ? null
                   : renderChildNodes(childNode.children)}
@@ -208,7 +214,7 @@ export default function App() {
 
     return (
       <ul>
-        <li>{renderNodeItem(rootNode)}</li>
+        <li>{renderTreeNode(rootNode)}</li>
         {rootNode.isCollapse ? null : renderChildNodes(rootNode.children)}
       </ul>
     );

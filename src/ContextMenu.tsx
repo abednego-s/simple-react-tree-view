@@ -15,7 +15,7 @@ export const ContextMenu = forwardRef<
       ref={ref}
       className="contextmenu"
       style={{
-        display: "none"
+        display: "none",
       }}
     >
       <ul className="contextmenu-options">
@@ -36,7 +36,7 @@ export const ContextMenu = forwardRef<
         </li>
         <li>
           <button className="context-menu-item" onClick={onRemoveNode}>
-            Remove
+            Delete
           </button>
         </li>
       </ul>
