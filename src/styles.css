@@ -1,0 +1,57 @@
+ul {
+  list-style: none;
+  padding-inline-start: 15px;
+}
+
+.tree-node-selectable {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.tree-node-icon {
+  padding-right: 10px;
+}
+.tree-node-icon.collapse svg {
+  rotate: 90deg;
+}
+
+.contextmenu {
+  position: fixed;
+  z-index: 1000;
+  width: 150px;
+  background-color: black;
+}
+
+.contextmenu-options {
+  margin: 0;
+  padding: 0;
+}
+
+.context-menu-item {
+  background: transparent;
+  color: #fff;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.context-menu-item:hover {
+  background: blueviolet;
+}
+
+.tree-node-filename-input {
+  border: 1px solid blueviolet;
+  display: block;
+  padding: 8px 10px;
+  border-radius: 5px;
+}
+
+.tree-node-filename-input.error {
+  border: 1px solid red;
+}
