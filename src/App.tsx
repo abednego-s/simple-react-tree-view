@@ -60,12 +60,12 @@ export default function App() {
   function createTreeNode(type: "dir" | "file") {
     const selectedNode = tree.getNodeById(activeTreeNode);
     const newTreeNode = tree.insert("", selectedNode, type);
-    const treeData = tree.getFlat();
+    const treeNodes = tree.getFlat();
     const newTreeNodes: TreeState = {};
 
-    for (let property in treeData) {
+    for (let property in treeNodes) {
       newTreeNodes[property] = {
-        ...treeData[property],
+        ...treeNodes[property],
         mode: property === newTreeNode.id ? "write" : "read",
         isError: false,
       };
@@ -147,7 +147,7 @@ export default function App() {
 
   function renderTreeNodeAsWritable(treeNode: TreeNodeState) {
     return (
-      <form onSubmit={handleRenameTreeNode}>
+      <form onSubmit={handleRenameTreeNode} className="tree-node-input-form">
         <input
           value={filenameInput}
           onChange={handleUpdateFilenameInput}
@@ -169,14 +169,14 @@ export default function App() {
         {treeNode.type === "dir" ? (
           <span
             className={`tree-node-icon ${
-              treeNode.isCollapse ? "collapse" : null
+              treeNode.isCollapse ? "collapse" : ""
             }`}
           >
             <ChevronIcon />
           </span>
         ) : null}
 
-        <span>{treeNode.name}</span>
+        <span className="tree-node-label">{treeNode.name}</span>
       </button>
     );
   }
