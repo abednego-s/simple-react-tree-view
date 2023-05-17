@@ -1,12 +1,5 @@
 {
-  "name": "react-typescript",
-  "version": "1.0.0",
-  "description": "React and TypeScript example starter project",
-  "keywords": [
-    "typescript",
-    "react",
-    "starter"
-  ],
+  "name": "simple-react-tree-view",
   "main": "src/index.tsx",
   "dependencies": {
     "loader-utils": "3.2.1",

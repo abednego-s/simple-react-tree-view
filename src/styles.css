@@ -11,11 +11,37 @@ ul {
   padding: 5px 10px;
   cursor: pointer;
 }
+
+.tree-node-selectable:focus {
+  color: blueviolet;
+  font-weight: 700;
+}
+
 .tree-node-icon {
-  padding-right: 10px;
+  width: 15px;
+  height: 15px;
 }
 .tree-node-icon.collapse svg {
   rotate: 90deg;
+}
+
+.tree-node-label {
+  padding-left: 10px;
+}
+
+.tree-node-filename-input {
+  border: 1px solid blueviolet;
+  display: block;
+  padding: 8px 10px;
+  border-radius: 5px;
+}
+
+.tree-node-input-form {
+  padding-left: 15px;
+}
+
+.tree-node-filename-input.error {
+  border: 1px solid red;
 }
 
 .contextmenu {
@@ -43,15 +69,4 @@ ul {
 
 .context-menu-item:hover {
   background: blueviolet;
-}
-
-.tree-node-filename-input {
-  border: 1px solid blueviolet;
-  display: block;
-  padding: 8px 10px;
-  border-radius: 5px;
-}
-
-.tree-node-filename-input.error {
-  border: 1px solid red;
 }
